@@ -20,7 +20,7 @@ for printer in printers:
 			raise Exception('PPD not found')
 		
 		# add print queue
-		subprocess.call(['/System/Library/SystemConfiguration/PrinterNotifications.bundle/Contents/MacOS/makequeues', '-v', printer['uri'], '-d', printer['ppd'], '-q', printer['name']])
+		subprocess.check_call(['/System/Library/SystemConfiguration/PrinterNotifications.bundle/Contents/MacOS/makequeues', '-v', printer['uri'], '-d', printer['ppd'], '-q', printer['name']])
 		
 	except Exception as e:
 		print "Could not add printer %s: %s" % (printer['name'], e)
