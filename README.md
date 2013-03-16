@@ -38,4 +38,7 @@ In some cases, the window might not appear like the one shown above but rather a
 
 The plist file matches the ones linked above and contains a key `predicate`.
 
-Note that some installers require certain environment variables to be set even when using a predicate. For example, Java needs JAVA_INSTALL_ON_DEMAND. For details, see the [examples](examples).
+Note that some installers require certain environment variables to be set even when using a predicate.
+For example, Java needs JAVA_INSTALL_ON_DEMAND. For details, see the [examples](examples).
+
+Similarly, printer drivers require the printer to already be connected to the computer or visible on the network. As this is determined by looking at /Library/Printers/InstalledPrinters.plist, this check is easy to bypass.
