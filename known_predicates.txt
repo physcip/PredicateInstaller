@@ -1,5 +1,0 @@
-"com.apple.java.runtime" IN tags
-"VOICEID:com.apple.speech.synthesis.voice.anna.premium_2" IN tags
-"VOICEID:com.apple.speech.synthesis.voice.steffi.premium_2" IN tags
-"VOICEID:com.apple.speech.synthesis.voice.yannick.premium_2" IN tags'
-("printing software" IN tags OR "printer update" IN tags) AND "MANUFACTURER:HP;MODEL:Color LaserJet CP4020-CP4520" IN tags

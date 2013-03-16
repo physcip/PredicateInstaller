@@ -36,4 +36,6 @@ In some cases, the window might not appear like the one shown above but rather a
 	Mar 16 12:29:59 testclient.physcip.uni-stuttgart.de Software Update[4218]: SoftwareUpdate: Using predicate ("printing software" IN tags OR "printer update" IN tags) AND "MANUFACTURER:HP;MODEL:Color LaserJet CP4020-CP4520" IN tags
 	Mar 16 12:29:59 testclient.physcip.uni-stuttgart.de Software Update[4218]: SoftwareUpdate: Using filter keys 041-9116
 
-The plist file matches the ones linked above and contains a key `predicate`. I am putting together a [list of example predicates](known_predicates.txt), so please submit a pull request if you found something that's not in the list yet.
+The plist file matches the ones linked above and contains a key `predicate`.
+
+Note that some installers require certain environment variables to be set even when using a predicate. For example, Java needs JAVA_INSTALL_ON_DEMAND. For details, see the [examples](examples).
