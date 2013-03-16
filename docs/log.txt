@@ -1,0 +1,55 @@
+$ sudo python Desktop/printer.py '"VOICEID:com.apple.speech.synthesis.voice.anna.premium_2" IN tags OR "VOICEID:com.apple.speech.synthesis.voice.steffi.premium_2" IN tags OR "VOICEID:com.apple.speech.synthesis.voice.yannick.premium_2" IN tags'
+Mar 16 11:50:06 testclient.physcip.uni-stuttgart.de installd[3888]: installd: Starting
+Mar 16 11:50:06 testclient.physcip.uni-stuttgart.de installd[3888]: installd: uid=0, euid=0
+Mar 16 11:50:06 testclient.physcip.uni-stuttgart.de Software Update[3887]: SoftwareUpdate: Scan for client pid 3887 (/opt/local/Library/Frameworks/Python.framework/Versions/2.7/Resources/Python.app/Contents/MacOS/Python) parent pid 3886 (/usr/bin/sudo)
+Mar 16 11:50:06 testclient.physcip.uni-stuttgart.de Software Update[3887]: SoftwareUpdate: Using predicate "VOICEID:com.apple.speech.synthesis.voice.anna.premium_2" IN tags OR "VOICEID:com.apple.speech.synthesis.voice.steffi.premium_2" IN tags OR "VOICEID:com.apple.speech.synthesis.voice.yannick.premium_2" IN tags
+Mar 16 11:50:07 testclient.physcip.uni-stuttgart.de Software Update[3887]: SoftwareUpdate: Using catalog http://green.physcip.uni-stuttgart.de/reposado/index.sucatalog
+Mar 16 11:50:08 testclient.physcip.uni-stuttgart.de Software Update[3887]: JS: 10.8.3
+Mar 16 11:50:12 testclient.physcip.uni-stuttgart.de suhelperd[3892]: Acquired Lock: 0, 3887, 0
+Mar 16 11:50:12 testclient.physcip.uni-stuttgart.de suhelperd[3892]: Releasing Lock: 0, 3887, 0
+Installing Multi-Lingual Voices 2.0.0 041-5263 com.apple.pkg.MLV_de_DE_yannick
+Installing Multi-Lingual Voices 2.0.0 041-5261 com.apple.pkg.MLV_de_DE_anna
+Installing Multi-Lingual Voices 2.0.0 041-5262 com.apple.pkg.MLV_de_DE_steffi
+session <SUSession: 0x7fe78d624af0> did begin
+Mar 16 11:50:12 testclient.physcip.uni-stuttgart.de Software Update[3887]: SoftwareUpdate: elapsed scan time = 6.0
+Mar 16 11:50:13 testclient.physcip.uni-stuttgart.de suhelperd[3892]: Acquired Lock: 0, 3887, 0
+Mar 16 11:50:43 testclient.physcip.uni-stuttgart.de installd[3888]: PackageKit: ----- Begin install -----
+Mar 16 11:50:43 testclient.physcip.uni-stuttgart.de installd[3888]: PackageKit: request=PKInstallRequest <3 packages, destination=/>
+Mar 16 11:50:43 testclient.physcip.uni-stuttgart.de installd[3888]: PackageKit: packages=(
+	    "PKLeopardPackage <file://localhost/Library/Updates/041-5261/MLV_de_DE_anna.pkg>",
+	    "PKLeopardPackage <file://localhost/Library/Updates/041-5262/MLV_de_DE_steffi.pkg>",
+	    "PKLeopardPackage <file://localhost/Library/Updates/041-5263/MLV_de_DE_yannick.pkg>"
+	)
+Mar 16 11:50:43 testclient.physcip.uni-stuttgart.de installd[3888]: PackageKit: Will do receipt-based obsoleting for package identifier com.apple.pkg.MLV_de_DE_anna (prefix path=/)
+Mar 16 11:50:43 testclient.physcip.uni-stuttgart.de installd[3888]: PackageKit: Will do receipt-based obsoleting for package identifier com.apple.pkg.MLV_de_DE_steffi (prefix path=/)
+Mar 16 11:50:43 testclient.physcip.uni-stuttgart.de installd[3888]: PackageKit: Will do receipt-based obsoleting for package identifier com.apple.pkg.MLV_de_DE_yannick (prefix path=/)
+Mar 16 11:50:48 testclient.physcip.uni-stuttgart.de installd[3888]: PackageKit: Extracting file://localhost/Library/Updates/041-5261/MLV_de_DE_anna.pkg (destination=/var/folders/zz/zyxvpxvq6csfxvn_n0000000000000/Cleanup At Startup/PKInstallSandboxManager/1.sandbox/Root, uid=0)
+Mar 16 11:50:55 testclient.physcip.uni-stuttgart.de installd[3888]: PackageKit: Extracting file://localhost/Library/Updates/041-5262/MLV_de_DE_steffi.pkg (destination=/var/folders/zz/zyxvpxvq6csfxvn_n0000000000000/Cleanup At Startup/PKInstallSandboxManager/1.sandbox/Root, uid=0)
+Mar 16 11:51:00 testclient.physcip.uni-stuttgart.de installd[3888]: PackageKit: Extracting file://localhost/Library/Updates/041-5263/MLV_de_DE_yannick.pkg (destination=/var/folders/zz/zyxvpxvq6csfxvn_n0000000000000/Cleanup At Startup/PKInstallSandboxManager/1.sandbox/Root, uid=0)
+Mar 16 11:51:04 testclient.physcip.uni-stuttgart.de installd[3888]: PackageKit: update_dyld_shared_cache -overlay /var/folders/zz/zyxvpxvq6csfxvn_n0000000000000/Cleanup At Startup/PKInstallSandboxManager/1.sandbox/Root
+Mar 16 11:51:09 testclient.physcip.uni-stuttgart.de installd[3888]: PackageKit: prevent user idle system sleep
+Mar 16 11:51:09 testclient.physcip.uni-stuttgart.de installd[3888]: PackageKit: suspending backupd
+Mar 16 11:51:09 testclient.physcip.uni-stuttgart.de installd[3888]: PackageKit: Executing script "preinstall" in /private/tmp/PKInstallSandbox.UXex5q/Scripts/com.apple.pkg.MLV_de_DE_anna.ARD84E
+Mar 16 11:51:09 testclient.physcip.uni-stuttgart.de installd[3888]: PackageKit: Executing script "preinstall" in /private/tmp/PKInstallSandbox.UXex5q/Scripts/com.apple.pkg.MLV_de_DE_steffi.PHzNHb
+Mar 16 11:51:09 testclient.physcip.uni-stuttgart.de install_monitor[3895]: Temporarily excluding: /Applications, /Developer, /Library, /System, /bin, /private, /sbin, /usr
+Mar 16 11:51:09 testclient.physcip.uni-stuttgart.de _softwareupdate[3901]: Running Install Scripts . . .
+Mar 16 11:51:10 testclient.physcip.uni-stuttgart.de _softwareupdate[3903]: 0 Install Scripts run.
+Mar 16 11:51:10 testclient.physcip.uni-stuttgart.de installd[3888]: PackageKit: Executing script "preinstall" in /private/tmp/PKInstallSandbox.UXex5q/Scripts/com.apple.pkg.MLV_de_DE_yannick.Wq9Zaa
+Mar 16 11:51:10 testclient.physcip.uni-stuttgart.de _softwareupdate[3906]: Running Install Scripts . . .
+Mar 16 11:51:10 testclient.physcip.uni-stuttgart.de _softwareupdate[3908]: 0 Install Scripts run.
+Mar 16 11:51:10 testclient.physcip.uni-stuttgart.de installd[3888]: PackageKit: Shoving /var/folders/zz/zyxvpxvq6csfxvn_n0000000000000/Cleanup At Startup/PKInstallSandboxManager/1.sandbox/Root (1 items) to /
+Mar 16 11:51:10 testclient.physcip.uni-stuttgart.de installd[3888]: PackageKit: Executing script "postinstall" in /private/tmp/PKInstallSandbox.UXex5q/Scripts/com.apple.pkg.MLV_de_DE_anna.ARD84E
+Mar 16 11:51:10 testclient.physcip.uni-stuttgart.de installd[3888]: PackageKit: Executing script "postinstall" in /private/tmp/PKInstallSandbox.UXex5q/Scripts/com.apple.pkg.MLV_de_DE_steffi.PHzNHb
+Mar 16 11:51:10 testclient.physcip.uni-stuttgart.de _softwareupdate[3914]: Running Install Scripts . . .
+Mar 16 11:51:10 testclient.physcip.uni-stuttgart.de _softwareupdate[3916]: 0 Install Scripts run.
+Mar 16 11:51:10 testclient.physcip.uni-stuttgart.de installd[3888]: PackageKit: Executing script "postinstall" in /private/tmp/PKInstallSandbox.UXex5q/Scripts/com.apple.pkg.MLV_de_DE_yannick.Wq9Zaa
+Mar 16 11:51:10 testclient.physcip.uni-stuttgart.de _softwareupdate[3919]: Running Install Scripts . . .
+Mar 16 11:51:10 testclient.physcip.uni-stuttgart.de _softwareupdate[3921]: 0 Install Scripts run.
+Mar 16 11:51:10 testclient.physcip.uni-stuttgart.de installd[3888]: PackageKit: Writing receipt for com.apple.pkg.MLV_de_DE_anna to /private/var/db/receipts
+Mar 16 11:51:10 testclient.physcip.uni-stuttgart.de installd[3888]: PackageKit: Writing receipt for com.apple.pkg.MLV_de_DE_steffi to /private/var/db/receipts
+Mar 16 11:51:10 testclient.physcip.uni-stuttgart.de installd[3888]: PackageKit: Writing receipt for com.apple.pkg.MLV_de_DE_yannick to /private/var/db/receipts
+Mar 16 11:51:10 testclient.physcip.uni-stuttgart.de installd[3888]: Installed "Multi-Lingual Voices" (2.0.0)
+Mar 16 11:51:10 testclient.physcip.uni-stuttgart.de install_monitor[3895]: Re-included: /Applications, /Developer, /Library, /System, /bin, /private, /sbin, /usr
+Mar 16 11:51:10 testclient.physcip.uni-stuttgart.de installd[3888]: PackageKit: releasing backupd
+Mar 16 11:51:10 testclient.physcip.uni-stuttgart.de installd[3888]: PackageKit: allow user idle system sleep
+Mar 16 11:51:10 testclient.physcip.uni-stuttgart.de installd[3888]: PackageKit: ----- End install -----

@@ -1,0 +1,3 @@
+"VOICEID:com.apple.speech.synthesis.voice.anna.premium_2" IN tags
+"VOICEID:com.apple.speech.synthesis.voice.steffi.premium_2" IN tags
+"VOICEID:com.apple.speech.synthesis.voice.yannick.premium_2" IN tags'

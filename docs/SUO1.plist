@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>activePID</key>
+	<integer>90026</integer>
+	<key>busyMessage</key>
+	<string>When the other software update is finished, try again.</string>
+	<key>busyTitle</key>
+	<string>The voices can’t be installed now because another software update is being installed.</string>
+	<key>confirm</key>
+	<false/>
+	<key>iconPath</key>
+	<string>/System/Library/PreferencePanes/Speech.prefPane/Contents/Resources/Speef.icns</string>
+	<key>legalTextType</key>
+	<integer>2</integer>
+	<key>noNetworkMessage</key>
+	<string>Connect to the Internet and try again.</string>
+	<key>noNetworkTitle</key>
+	<string>The voices can’t be installed now because you are not connected to the Internet.</string>
+	<key>noServerTitle</key>
+	<string>The voices can’t be installed now because the Software Update Server can’t be found.</string>
+	<key>notFoundMessage</key>
+	<string>Voices aren’t available to download at this time. Try again later.</string>
+	<key>predicate</key>
+	<string>"VOICEID:com.apple.speech.synthesis.voice.anna.premium_2" IN tags OR "VOICEID:com.apple.speech.synthesis.voice.steffi.premium_2" IN tags OR "VOICEID:com.apple.speech.synthesis.voice.yannick.premium_2" IN tags</string>
+	<key>requireSLA</key>
+	<true/>
+	<key>title</key>
+	<string>Are you sure you want to download and install 3 voices totalling 1.2 GB now?</string>
+</dict>
+</plist>
