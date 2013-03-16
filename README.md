@@ -23,12 +23,17 @@ Here is an example of how to call it:
 
 If you'd like to see what it outputs, have a look [here](docs/log.txt) (it follows /var/log/install.log to show you what it's doing). Don't worry if it pauses for a few seconds or minutes after outputting _Acquired Lock: 0, 3887, 0_: it's simply downloading the package and doesn't have any kind of progress indicator.
 
-To figure out what predicate you need to install a certain printer driver, voice, Java installer, etc., simply trigger the install in the GUI (i.e. select the driver in the Add Printer window, choose the voice in the Speech prefpane or launch a Java app, ...) and then open a Terminal and run
+To figure out what predicate you need to install a certain printer driver, voice, Java installer, etc., simply trigger the install in the GUI (i.e. select the driver in the Add Printer window, choose the voice in the Speech prefpane or launch a Java app, ...) so you get a window like the one shown above and then open a Terminal to run
 
 	ps axu | grep 'Software Update'
 
 This will give you a line like 
 
 	/System/Library/CoreServices/Software Update.app/Contents/MacOS/Software Update -PredicateOptions /var/folders/c2/6n0g8_9n0gxbj_xsdt1byn600000gp/T/SoftwareUpdateOptions.plist
+
+In some cases, the window might not appear like the one shown above but rather as a sheet of the current window (Add Printer appears to be doing just that). In this case, have a look at /var/log/install.log where you can find lines like
+
+	Mar 16 12:29:59 testclient.physcip.uni-stuttgart.de Software Update[4218]: SoftwareUpdate: Using predicate ("printing software" IN tags OR "printer update" IN tags) AND "MANUFACTURER:HP;MODEL:Color LaserJet CP4020-CP4520" IN tags
+	Mar 16 12:29:59 testclient.physcip.uni-stuttgart.de Software Update[4218]: SoftwareUpdate: Using filter keys 041-9116
 
 The plist file matches the ones linked above and contains a key `predicate`. I am putting together a [list of example predicates](known_predicates.txt), so please submit a pull request if you found something that's not in the list yet.
