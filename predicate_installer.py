@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import objc
 from Cocoa import NSPredicate, NSObject
 import time
