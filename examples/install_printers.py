@@ -30,7 +30,7 @@ for printer in printers:
 			# mark printer as connected
 			subprocess.check_call(['/usr/libexec/PlistBuddy', '-c', "Add InstalledPrinters: string " + printer['model'], '/Library/Printers/InstalledPrinters.plist'])
 			# install printer driver
-			subprocess.call(['/usr/bin/python', 'predicate_installer.py', printer['predicate']])
+			subprocess.call(['/usr/bin/python', os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'predicate_installer.py'), printer['predicate']])
 		if not os.path.exists(printer['ppd']):
 			raise Exception('PPD not found')
 		
