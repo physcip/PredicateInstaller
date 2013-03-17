@@ -35,9 +35,6 @@ objc.loadBundle("SoftwareUpdate", globals(), framework)
 if len(sys.argv) < 2:
 	raise Exception('Please specify a predicate on the command line')
 predicate = sys.argv[1]
-#predicate = '("printing software" IN tags OR "printer update" IN tags) AND "MANUFACTURER:Hewlett-Packard;MODEL:HP Color LaserJet CP4520 Series" IN tags'
-#predicate = '"VOICEID:com.apple.speech.synthesis.voice.anna.premium_2" IN tags OR "VOICEID:com.apple.speech.synthesis.voice.steffi.premium_2" IN tags OR "VOICEID:com.apple.speech.synthesis.voice.yannick.premium_2" IN tags'
-#predicate = '"VOICEID:com.apple.speech.synthesis.voice.anna.premium_2" IN tags'
 predicate = NSPredicate.predicateWithFormat_(predicate)
 
 # set up scanner
@@ -75,7 +72,12 @@ class SessionDelegate(NSObject):
 		pass
 
 delegate = SessionDelegate.alloc().init()
-session = SUSession.alloc().initWithProducts_options_delegate_(products, 0, delegate)
+if hasattr(SUSession, 'initWithProducts_options_delegate_'): # Mac OS X 10.8
+	session = SUSession.alloc().initWithProducts_options_delegate_(products, 0, delegate)
+elif hasattr(SUSession, 'initWithProducts_downloadDirectory_options_delegate_'): # Mac OS X 10.6
+	session = SUSession.alloc().initWithProducts_downloadDirectory_options_delegate_(products, '/Library/Updates', 0, delegate)
+else:
+	raise Exception("SUSession.initWithProducts_ not found")
 session.start()
 AppHelper.runConsoleEventLoop(installInterrupt=True)
 #while True:
