@@ -17,7 +17,8 @@ In Mac OS X 10.6 Snow Leopard, the command line equivalent /usr/sbin/softwareupd
 
 In Mac OS X 10.8 Mountain Lion however, that flag no longer exists. This script is supposed to fill that void.
 
-I have only tested this script on Mac OS X 10.8.3. It likely also works on 10.7 Mountain Lion, but probably not on any earlier versions.
+I have tested this script on Mac OS X 10.8.3 Mountain Lion; it likely works on anything upwards from Mac OS X 10.7 Lion.
+I did also test it on Mac OS X 10.6 and after working around a tiny difference in the API, it appears to mostly work fine.
 
 ## Example
 
@@ -39,7 +40,7 @@ This will give you a line like
 
 	/System/Library/CoreServices/Software Update.app/Contents/MacOS/Software Update -PredicateOptions /var/folders/c2/6n0g8_9n0gxbj_xsdt1byn600000gp/T/SoftwareUpdateOptions.plist
 
-In some cases, the window might not appear like the one shown above but rather as a sheet of the current window (Add Printer appears to be doing just that). In this case, have a look at /var/log/install.log where you can find lines like
+In some cases, the window might not appear like the one shown above but rather as a sheet of the current window (Add Printer appears to be doing just that). In this case, actually start the install (you can still cancel it while it downloads) and have a look at /var/log/install.log where you can find lines like
 
 	Mar 16 12:29:59 testclient.physcip.uni-stuttgart.de Software Update[4218]: SoftwareUpdate: Using predicate ("printing software" IN tags OR "printer update" IN tags) AND "MANUFACTURER:HP;MODEL:Color LaserJet CP4020-CP4520" IN tags
 	Mar 16 12:29:59 testclient.physcip.uni-stuttgart.de Software Update[4218]: SoftwareUpdate: Using filter keys 041-9116
@@ -58,4 +59,4 @@ If you can't figure out what variable to set or file to edit, have a look at you
 	cd /Volumes/stuff/reposado/html
 	grep tag $(grep -o QuickTime $(find . -name *.dist | grep 'English\.dist\|en\.dist') | awk -F ':' '{print $1}')
 
-This would give you a short list of files you can look at to find out how the installer checks work (they're written in JavaScript).
+This would give you a list of files you can look at to find out how the installer checks work (they're written in JavaScript).
