@@ -8,7 +8,7 @@ Predicates allow you to specify non-update packages you want to install. This me
 
 This shows a window like this one:
 
-![Are you sure you want to download and install the voice "Moira" (381 MB) now?](docs/SoftwareUpdate.png)
+![To open Cyberduck, you need a Java SE 6 runtime. Would you like to install one now?](docs/SoftwareUpdate.png)
 
 In Mac OS X 10.6 Snow Leopard, the command line equivalent /usr/sbin/softwareupdate used to have an option `--predicate` that mimicked this behavior:
 
