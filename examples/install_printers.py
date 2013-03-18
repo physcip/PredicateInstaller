@@ -7,7 +7,7 @@ printers = []
 printers.append({
 	'predicate' : '("printing software" IN tags OR "printer update" IN tags) AND "MANUFACTURER:HP;MODEL:Color LaserJet CP4020-CP4520" IN tags',
 	'model' : "MANUFACTURER:HP;MODEL:Color LaserJet CP4020-CP4520",
-	'uri' : 'ipp://purple.physcip.uni-stuttgart.de:631/printers/wario.physcip.uni-stuttgart.de',
+	'uri' : 'ipp://purple.physcip.uni-stuttgart.de:631/printers/wario_physcip_uni_stuttgart_de',
 	'ppd' : '/Library/Printers/PPDs/Contents/Resources/HP Color LaserJet CP4020 CP4520 Series.gz',
 	'name' : 'wario',
 	'options' : {
