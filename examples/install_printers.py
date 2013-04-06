@@ -19,10 +19,15 @@ printers.append({
 		'Duplex' : 'DuplexNoTumble',
 		'HPBookletPageSize' : 'A4',
 	},
+	'remote' : True,
 })
 
 # To figure out the model, run /System/Library/SystemConfiguration/PrinterNotifications.bundle/Contents/MacOS/makequeues -q, which performs a Bonjour scan. 
 # To figure out available options, run lpoptions -d printername -l after you initially added the printer
+
+predicate_installer = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'predicate_installer.py') # in this directory
+if not os.path.exists(predicate_installer):
+	predicate_installer = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'predicate_installer.py') # in parent directory
 
 for printer in printers:
 	try:
@@ -30,7 +35,7 @@ for printer in printers:
 			# mark printer as connected
 			subprocess.check_call(['/usr/libexec/PlistBuddy', '-c', "Add InstalledPrinters: string " + printer['model'], '/Library/Printers/InstalledPrinters.plist'])
 			# install printer driver
-			subprocess.call(['/usr/bin/python', os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'predicate_installer.py'), printer['predicate']])
+			subprocess.call(['/usr/bin/python', predicate_installer, printer['predicate']])
 		if not os.path.exists(printer['ppd']):
 			raise Exception('PPD not found')
 		
@@ -55,3 +60,23 @@ for printer in printers:
 	except Exception as e:
 		print "Could not add printer %s: %s" % (printer['name'], e)
 
+subprocess.check_call(['/bin/launchctl', 'unload', '/System/Library/LaunchDaemons/org.cups.cupsd.plist'])
+with open('/etc/cups/printers.conf') as f:
+	pr = f.readlines()
+	
+for printer in printers:
+	if 'remote' in printer and printer['remote'] == True:
+		section = False
+		for i,line in enumerate(pr):
+			if line.startswith('<Printer ' + printer['name'] + '>'):
+				section = True
+			elif line.startswith('</Printer>'):
+				section = False
+			
+			# set CUPS_PRINTER_REMOTE in Type
+			if section and line.startswith('Type '):
+				pr[i] = 'Type %d\n' % (int(line[5:-1]) | 2)
+
+with open('/etc/cups/printers.conf', 'w') as f:
+	f.writelines(pr)
+subprocess.check_call(['/bin/launchctl', 'load', '/System/Library/LaunchDaemons/org.cups.cupsd.plist'])
