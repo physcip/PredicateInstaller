@@ -29,6 +29,9 @@ predicate_installer = os.path.join(os.path.dirname(os.path.abspath(__file__)), '
 if not os.path.exists(predicate_installer):
 	predicate_installer = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'predicate_installer.py') # in parent directory
 
+# make sure CUPS is running
+subprocess.call(['/bin/launchctl', 'load', '/System/Library/LaunchDaemons/org.cups.cupsd.plist'])
+
 for printer in printers:
 	try:
 		if not os.path.exists(printer['ppd']):
