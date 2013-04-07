@@ -56,7 +56,7 @@ if len(products) < 1:
 	raise Exception("No products found")
 
 for product in products:
-	 print "Installing", product.displayName(), product.displayVersion(), product.productKey(), ", ".join(product.packageIdentifiersToInstall())
+	 print "Installing", product.displayName().encode("ascii", "replace"), product.displayVersion(), product.productKey(), ", ".join(product.packageIdentifiersToInstall())
 
 class SessionDelegate(NSObject):
 	session = None
