@@ -2,7 +2,9 @@
 
 This is a Python script that uses the private SoftwareUpdate framework to download packages from Apple's Software Update servers using a predicate.
 
-Predicates allow you to specify non-update packages you want to install. This mechanism is used e.g. by the Add Printer window to download a specific printer driver and the Speech prefpane to download voices for the language you selected. They write the predicate to a plist file (examples [1](docs/SUO1.plist) and [2](docs/SUO2.plist)) and call Software Update.app with the `-PredicateOptions` flag:
+Predicates allow you to specify non-update packages you want to install.
+This mechanism is used e.g. by the Add Printer window to download a specific printer driver and the Speech prefpane to download voices for the language you selected.
+They write the predicate to a plist file (examples: [Java](docs/SUO_Java.plist), [voices](docs/SUO_Voices.plist), [printer drivers](docs/SUO_Printer_Drivers.plist)) and call Software Update.app with the `-PredicateOptions` flag:
 
 	/System/Library/CoreServices/Software Update.app/Contents/MacOS/Software Update -PredicateOptions /var/folders/zr/zr7jmShWFHKCpwZ-u+Y8rU+++X2/-Tmp-/SoftwareUpdateOptions.plist
 

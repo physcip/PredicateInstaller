@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>activePID</key>
+	<integer>1920</integer>
+	<key>busyMessage</key>
+	<string>When it is finished, open “Cyberduck” again to install a Java SE 6 runtime.</string>
+	<key>busyTitle</key>
+	<string>Another software update is in progress.</string>
+	<key>confirm</key>
+	<true/>
+	<key>legalTextType</key>
+	<integer>3</integer>
+	<key>noNetworkMessage</key>
+	<string>To install a Java SE 6 runtime later, open “Cyberduck” again.</string>
+	<key>noNetworkTitle</key>
+	<string>To open “Cyberduck,” you need to install a Java SE 6 runtime, but you are not connected to the Internet.</string>
+	<key>noServerTitle</key>
+	<string>To open “Cyberduck,” you need to install a Java SE 6 runtime, but software updates are not available now.</string>
+	<key>notFoundMessage</key>
+	<string>To install a Java SE 6 runtime later, open “Cyberduck” again.</string>
+	<key>predicate</key>
+	<string>"com.apple.java.runtime" IN tags</string>
+	<key>title</key>
+	<string>To open “Cyberduck,” you need a Java SE 6 runtime. Would you like to install one now?</string>
+</dict>
+</plist>
