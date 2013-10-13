@@ -5,8 +5,11 @@ from Cocoa import NSPredicate, NSObject
 import time
 import os
 import sys
+import platform
 from threading import Thread
 from PyObjCTools import AppHelper
+
+finishedInstall = False
 
 def installlog():
 	f = open('/var/log/install.log', 'r')
@@ -17,6 +20,9 @@ def installlog():
 			time.sleep(1)
 		else:
 			print line,
+			if 'SoftwareUpdate: finished install' in line:
+				global finishedInstall
+				finishedInstall = True
 	f.close()
 
 # follow log file
@@ -36,6 +42,52 @@ if len(sys.argv) < 2:
 	raise Exception('Please specify a predicate on the command line')
 predicate = sys.argv[1]
 predicate = NSPredicate.predicateWithFormat_(predicate)
+
+if int(platform.release().split('.')[0]) >= 13: # OS X 10.9 and higher
+	
+	class ControllerDelegate(NSObject):
+		def __getattr__(self, name):
+			def method(*args):
+				print("tried to handle unknown method " + name)
+				if args:
+					print("it had arguments: " + str(args))
+				return True
+			return method
+	
+	controller = SUSoftwareUpdateController.alloc().initWithDelegate_localizedProductName_(ControllerDelegate, "SU Predicate")
+	if controller.countOfCachedProductsMatchingPredicate_(predicate) == 0:
+		raise Exception("No products found")
+	
+	md = controller.metadataOfCachedProductsMatchingPredicate_(predicate)
+	#print md
+	
+	# get matching product keys
+	mdcache = SUMetadataCache.alloc().init()
+	productkeys = mdcache.cachedProductKeysMatchingPredicate_(predicate)
+	#print productkeys
+	
+	conn = objc.getInstanceVariable(controller, '_connection')
+	serviceclient = conn.remoteObjectProxy()
+	serviceclient.dumpServiceDebugInfo()
+	
+	controller.startUpdateInBackgroundWithPredicate_(predicate)
+	
+	startedInstall = False
+	while not finishedInstall:
+		# _runningUpdate is the only thing that ever changes. currentState is always zero. 
+		# but getting a struct from PyObjC always logs a warning, so instead of using _runningUpdate we simply watch the log
+		
+		#runningUpdate = objc.getInstanceVariable(controller, '_runningUpdate')
+		#if not startedInstall and runningUpdate != None:
+		#	startedInstall = True
+		#elif startedInstall and runningUpdate == None:
+		#	break
+		time.sleep(5)
+	
+	# SUUpdateServiceDaemon._installProducts, SUUpdateServiceDaemon.startUpdatesForProductKeys and SUUpdateSession.startUpdateForProducts cannot be used because they take an ObjC block as their final argument, which PyObjC doesn't yet appear to support.
+	# SUUpdateSession._startTransactionForForeground doesn't work because we don't have a simple way to get product objects from product keys.
+
+	sys.exit()
 
 # set up scanner
 scan = SUScan.alloc().init()
