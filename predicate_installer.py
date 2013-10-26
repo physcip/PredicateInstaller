@@ -73,15 +73,15 @@ if int(platform.release().split('.')[0]) >= 13: # OS X 10.9 and higher
 	controller.startUpdateInBackgroundWithPredicate_(predicate)
 	
 	startedInstall = False
-	while not finishedInstall:
+	while True:
 		# _runningUpdate is the only thing that ever changes. currentState is always zero. 
-		# but getting a struct from PyObjC always logs a warning, so instead of using _runningUpdate we simply watch the log
+		# unfortunately getting a struct from PyObjC always logs a warning
 		
-		#runningUpdate = objc.getInstanceVariable(controller, '_runningUpdate')
-		#if not startedInstall and runningUpdate != None:
-		#	startedInstall = True
-		#elif startedInstall and runningUpdate == None:
-		#	break
+		runningUpdate = objc.getInstanceVariable(controller, '_runningUpdate')
+		if not startedInstall and runningUpdate != None:
+			startedInstall = True
+		elif startedInstall and runningUpdate == None:
+			break
 		time.sleep(5)
 	
 	# SUUpdateServiceDaemon._installProducts, SUUpdateServiceDaemon.startUpdatesForProductKeys and SUUpdateSession.startUpdateForProducts cannot be used because they take an ObjC block as their final argument, which PyObjC doesn't yet appear to support.
