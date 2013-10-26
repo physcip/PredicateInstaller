@@ -14,9 +14,14 @@ else:
 
 pkgs = [
 	'"VOICEID:com.apple.speech.synthesis.voice.anna.premium%s" IN tags' % num,
-	'"VOICEID:com.apple.speech.synthesis.voice.steffi.premium%s" IN tags' % num,
 	'"VOICEID:com.apple.speech.synthesis.voice.yannick.premium%s" IN tags' % num
 ]
+
+if num < 3:
+	pkgs.append('"VOICEID:com.apple.speech.synthesis.voice.steffi.premium%s" IN tags' % num)
+if num >= 3:
+	pkgs.append('"VOICEID:com.apple.speech.synthesis.voice.markus.premium%s" IN tags' % num)
+	pkgs.append('"VOICEID:com.apple.speech.synthesis.voice.petra.premium%s" IN tags' % num)
 
 for pkg in pkgs:
 	subprocess.call(['/usr/bin/python', os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'predicate_installer.py'), pkg])
