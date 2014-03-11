@@ -11,7 +11,6 @@ pkgs = [
 	'"DTCommandLineTools" IN tags'
 ]
 
-#os.environ['JAVA_INSTALL_ON_DEMAND'] = '1'
 open('/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress','a').close()
 
 for pkg in pkgs:
