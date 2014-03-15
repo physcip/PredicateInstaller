@@ -79,6 +79,8 @@ for printer in printers:
 		elif 'download' in printer:
 			from distutils.version import StrictVersion
 			try:
+				if not os.path.exists(printer['ppd']):
+					raise Exception()
 				installed_version = subprocess.check_output(['/usr/bin/zgrep', '^*FileVersion:', printer['ppd']]).split(':')[1].strip().replace('"','').replace("'",'')
 			except:
 				installed_version = '0.0'
@@ -97,7 +99,7 @@ for printer in printers:
 					raise Exception('Could not mount DMG')
 				pkgpath = os.path.join(mountpoint, printer['pkgpath'])
 				print "Installing %s" % pkgpath
-				subprocess.check_call(['/usr/bin/installer', '-package', pkgpath, '-target', '/'])
+				subprocess.check_call(['/usr/sbin/installer', '-package', pkgpath, '-target', '/'])
 				subprocess.check_call(['/usr/bin/hdiutil', 'detach', mountpoint])
 		if not os.path.exists(printer['ppd']):
 			raise Exception('PPD not found')
