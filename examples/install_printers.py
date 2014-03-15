@@ -31,12 +31,12 @@ printers.append({
 	'name' : 'nymeria',
 	'location': 'CIP Pool Physik',
 	'options' : {
-		'DefaultPaperSources' : 'PC410',
-		'DefaultFinisher' : 'FS533',
-		'DefaultKMPunchUnit' : 'PK519-EU4',
+		'PaperSources' : 'PC410',
+		'Finisher' : 'FS533',
+		'KMPunchUnit' : 'PK519-EU4',
 		'SelectColor' : 'Grayscale',
 		#'ColorModel' : 'Gray',
-		#'DefaultSimulationProfile' : 'None',
+		#'SimulationProfile' : 'None',
 	},
 	'remote' : True,
 })
