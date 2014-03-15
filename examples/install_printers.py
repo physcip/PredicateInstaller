@@ -2,6 +2,9 @@
 
 import subprocess
 import os
+import platform
+
+darwin = int(platform.release().split('.')[0])
 
 printers = []
 printers.append({
@@ -22,6 +25,37 @@ printers.append({
 	},
 	'remote' : True,
 })
+printers.append({
+	'uri' : 'ipp://robert.physcip.uni-stuttgart.de:631/printers/nymeria_physcip_uni_stuttgart_de',
+	'ppd' : '/Library/Printers/PPDs/Contents/Resources/KONICAMINOLTAC454e.gz',
+	'name' : 'nymeria',
+	'location': 'CIP Pool Physik',
+	'options' : {
+		'DefaultPaperSources' : 'PC410',
+		'DefaultFinisher' : 'FS533',
+		'DefaultKMPunchUnit' : 'PK519-EU4',
+		'SelectColor' : 'Grayscale',
+		#'ColorModel' : 'Gray',
+		#'DefaultSimulationProfile' : 'None',
+	},
+	'remote' : True,
+})
+if darwin == 10:
+	printers[-1]['download'] = 'https://o.cses.konicaminolta.com/file/Default.aspx?FilePath=DL/201307/25042126/BHC554ePSMacOS106_302MU.dmg'
+	printers[-1]['version'] = '3.0.2'
+	printers[-1]['pkgpath'] = 'A4/bizhub_C554_106.pkg'
+elif darwin == 11:
+	printers[-1]['download'] = 'https://o.cses.konicaminolta.com/file/Default.aspx?FilePath=DL/201307/25042758/BHC554ePSMacOS107_302MU.dmg'
+	printers[-1]['version'] = '3.0.2'
+	printers[-1]['pkgpath'] = 'A4/bizhub_C554_107.pkg'
+elif darwin == 12:
+	printers[-1]['download'] = 'https://o.cses.konicaminolta.com/file/Default.aspx?FilePath=DL/201307/25043316/BHC554ePSMacOS108_302MU.dmg'
+	printers[-1]['version'] = '3.0.2'
+	printers[-1]['pkgpath'] = 'A4/bizhub_C554_108.pkg'
+elif darwin == 13:
+	printers[-1]['download'] = 'https://o.cses.konicaminolta.com/file/Default.aspx?FilePath=dl/201401/13110019/bizhub_C554e_109.dmg'
+	printers[-1]['version'] = '4.5.3'
+	printers[-1]['pkgpath'] = 'bizhub_C554_C364_109.pkg'
 
 # To figure out the model, run /System/Library/SystemConfiguration/PrinterNotifications.bundle/Contents/MacOS/makequeues with the -q flag (on OS X 10.6) or -B flag (on OS X 10.8), which performs a Bonjour scan. 
 # To figure out available options, run lpoptions -d printername -l after you initially added the printer
@@ -37,11 +71,34 @@ subprocess.check_call(['/bin/launchctl', 'start', 'org.cups.cupsd'])
 
 for printer in printers:
 	try:
-		if not os.path.exists(printer['ppd']):
+		if not os.path.exists(printer['ppd']) and 'predicate' in printer:
 			# mark printer as connected
 			subprocess.check_call(['/usr/libexec/PlistBuddy', '-c', "Add InstalledPrinters: string " + printer['model'], '/Library/Printers/InstalledPrinters.plist'])
 			# install printer driver
 			subprocess.call(['/usr/bin/python', predicate_installer, printer['predicate']])
+		elif 'download' in printer:
+			from distutils.version import StrictVersion
+			try:
+				installed_version = subprocess.check_output(['/usr/bin/zgrep', '^*FileVersion:', printer['ppd']]).split(':')[1].strip().replace('"','').replace("'",'')
+			except:
+				installed_version = '0.0'
+			if not 'version' in printer:
+				printer['version'] = '0.0'
+			if not os.path.exists(printer['ppd']) or StrictVersion(printer['version']) > StrictVersion(installed_version):
+				dmg = os.path.join('/tmp', os.path.basename(printer['download']))
+				subprocess.check_call(['/usr/bin/curl', '-L', '-o', dmg, printer['download']])
+				mount = subprocess.check_output(['/usr/bin/hdiutil', 'attach', '-plist', dmg]).split('\n')
+				mountpoint = None
+				for i in range(len(mount)):
+					if 'mount-point' in mount[i]:
+						mountpoint = mount[i+1].strip().replace('<string>','').replace('</string>','')
+						break
+				if mountpoint is None:
+					raise Exception('Could not mount DMG')
+				pkgpath = os.path.join(mountpoint, printer['pkgpath'])
+				print "Installing %s" % pkgpath
+				subprocess.check_call(['/usr/bin/installer', '-package', pkgpath, '-target', '/'])
+				subprocess.check_call(['/usr/bin/hdiutil', 'detach', mountpoint])
 		if not os.path.exists(printer['ppd']):
 			raise Exception('PPD not found')
 		
