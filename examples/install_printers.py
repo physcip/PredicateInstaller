@@ -37,6 +37,11 @@ printers.append({
 		'SelectColor' : 'Grayscale',
 		#'ColorModel' : 'Gray',
 		#'SimulationProfile' : 'None',
+		'KMDuplex' : 'Double',
+	},
+	'editppd' : {
+		'^\*DefaultKMDuplex: .*$' : '*DefaultKMDuplex: Double',
+		'^\*DefaultSelectColor: .*$' : '*DefaultSelectColor: Grayscale',
 	},
 	'remote' : True,
 })
@@ -141,6 +146,15 @@ for printer in printers:
 			# set CUPS_PRINTER_REMOTE in Type
 			if section and line.startswith('Type '):
 				pr[i] = 'Type %d\n' % (int(line[5:-1]) | 2)
+	if 'editppd' in printer:
+		import re
+		f_ppd = open(os.path.join('/etc/cups/ppd', printer['name'] + '.ppd'), 'r+')
+		ppd = f_ppd.read()
+		for o,n in printer['editppd'].iteritems():
+			newppd = re.sub(o,n, ppd)
+		f_ppd.seek(0)
+		f_ppd.write(ppd)
+		f_ppd.close()
 
 with open('/etc/cups/printers.conf', 'w') as f:
 	f.writelines(pr)
