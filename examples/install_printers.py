@@ -87,7 +87,7 @@ for printer in printers:
 			if not 'version' in printer:
 				printer['version'] = '0.0'
 			if not os.path.exists(printer['ppd']) or StrictVersion(printer['version']) > StrictVersion(installed_version):
-				dmg = os.path.join(os.path.abspath(__file__), os.path.basename(printer['download']))
+				dmg = os.path.join(os.path.dirname(os.path.abspath(__file__)), os.path.basename(printer['download']))
 				subprocess.check_call(['/usr/bin/curl', '-L', '-o', dmg, printer['download']])
 				mount = subprocess.check_output(['/usr/bin/hdiutil', 'attach', '-plist', dmg]).split('\n')
 				mountpoint = None
