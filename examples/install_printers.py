@@ -35,14 +35,14 @@ printers.append({
 		'Finisher' : 'FS533',
 		'KMPunchUnit' : 'PK519-EU4',
 		'SelectColor' : 'Grayscale',
-		#'ColorModel' : 'Gray',
-		#'SimulationProfile' : 'None',
+#		'ColorModel' : 'Gray',
+#		'SimulationProfile' : 'None',
 		'KMDuplex' : 'Double',
 	},
-	'editppd' : {
-		'^\*DefaultKMDuplex: .*$' : '*DefaultKMDuplex: Double',
-		'^\*DefaultSelectColor: .*$' : '*DefaultSelectColor: Grayscale',
-	},
+#	'editppd' : {
+#		'^\*DefaultKMDuplex: .*$' : '*DefaultKMDuplex: Double',
+#		'^\*DefaultSelectColor: .*$' : '*DefaultSelectColor: Grayscale',
+#	},
 	'remote' : True,
 })
 if darwin == 10:
