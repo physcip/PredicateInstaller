@@ -2,29 +2,7 @@
 
 import subprocess
 import os
-
-printers = []
-printers.append({
-	'predicate' : '("printing software" IN tags OR "printer update" IN tags) AND "MANUFACTURER:HP;MODEL:Color LaserJet CP4020-CP4520" IN tags',
-	'model' : "MANUFACTURER:HP;MODEL:Color LaserJet CP4020-CP4520",
-	'uri' : 'ipp://robert.physcip.uni-stuttgart.de:631/printers/ghost_physcip_uni_stuttgart_de',
-	'ppd' : '/Library/Printers/PPDs/Contents/Resources/HP Color LaserJet CP4020 CP4520 Series.gz',
-	'name' : 'ghost',
-	'location': 'CIP Pool Physik',
-	'options' : {
-		'InstalledMemory' : '1048576',
-		'OptionalTray' : 'HP3x500PaperFeeder',
-		'HPOption_Duplexer' : 'True',
-		'HPOption_Disk' : 'True',
-		'PageSize' : 'A4',
-		'Duplex' : 'DuplexNoTumble',
-		'HPBookletPageSize' : 'A4',
-	},
-	'remote' : True,
-})
-
-# To figure out the model, run /System/Library/SystemConfiguration/PrinterNotifications.bundle/Contents/MacOS/makequeues with the -q flag (on OS X 10.6) or -B flag (on OS X 10.8), which performs a Bonjour scan. 
-# To figure out available options, run lpoptions -d printername -l after you initially added the printer
+from install_printers_config import printers
 
 predicate_installer = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'predicate_installer.py') # in this directory
 if not os.path.exists(predicate_installer):
@@ -37,13 +15,44 @@ subprocess.check_call(['/bin/launchctl', 'start', 'org.cups.cupsd'])
 
 for printer in printers:
 	try:
-		if not os.path.exists(printer['ppd']):
+		if 'ppd' in printer and not os.path.exists(printer['ppd']) and 'predicate' in printer:
 			# mark printer as connected
 			subprocess.check_call(['/usr/libexec/PlistBuddy', '-c', "Add InstalledPrinters: string " + printer['model'], '/Library/Printers/InstalledPrinters.plist'])
 			# install printer driver
 			subprocess.call(['/usr/bin/python', predicate_installer, printer['predicate']])
+		elif 'ppd' in printer and 'download' in printer:
+			from distutils.version import StrictVersion
+			try:
+				if not os.path.exists(printer['ppd']):
+					raise Exception()
+				installed_version = subprocess.check_output(['/usr/bin/zgrep', '^*FileVersion:', printer['ppd']]).split(':')[1].strip().replace('"','').replace("'",'')
+			except:
+				installed_version = '0.0'
+			if not 'version' in printer:
+				printer['version'] = '0.0'
+			if not os.path.exists(printer['ppd']) or StrictVersion(printer['version']) > StrictVersion(installed_version):
+				dmg = os.path.join(os.path.dirname(os.path.abspath(__file__)), os.path.basename(printer['download']))
+				subprocess.check_call(['/usr/bin/curl', '-L', '-o', dmg, printer['download']])
+				mount = subprocess.check_output(['/usr/bin/hdiutil', 'attach', '-plist', dmg]).split('\n')
+				mountpoint = None
+				for i in range(len(mount)):
+					if 'mount-point' in mount[i]:
+						mountpoint = mount[i+1].strip().replace('<string>','').replace('</string>','')
+						break
+				if mountpoint is None:
+					raise Exception('Could not mount DMG')
+				pkgpath = os.path.join(mountpoint, printer['pkgpath'])
+				print "Installing %s" % pkgpath
+				subprocess.check_call(['/usr/sbin/installer', '-package', pkgpath, '-target', '/'])
+				subprocess.check_call(['/usr/bin/hdiutil', 'detach', mountpoint])
+		elif 'ppd' not in printer and 'download' in printer and printer['download'].endswith('.ppd'):
+			printer['ppd'] = os.path.join('/usr/share/cups/model', os.path.basename(printer['download']))
+			print "Downloading %s" % os.path.basename(printer['ppd'])
+			subprocess.check_call(['/usr/bin/curl', '-L', '-o', printer['ppd'], printer['download']])
 		if not os.path.exists(printer['ppd']):
 			raise Exception('PPD not found')
+		if printer['ppd'].startswith('/usr/share/cups/model'):
+			printer['ppd'] = os.path.basename(printer['ppd']) # relative path required
 		
 		# delete print queue if it already exists
 		DEVNULL = open(os.devnull, 'w')
@@ -82,6 +91,15 @@ for printer in printers:
 			# set CUPS_PRINTER_REMOTE in Type
 			if section and line.startswith('Type '):
 				pr[i] = 'Type %d\n' % (int(line[5:-1]) | 2)
+	if 'editppd' in printer:
+		import re
+		f_ppd = open(os.path.join('/etc/cups/ppd', printer['name'] + '.ppd'), 'r+')
+		ppd = f_ppd.read()
+		for o,n in printer['editppd'].iteritems():
+			newppd = re.sub(o,n, ppd)
+		f_ppd.seek(0)
+		f_ppd.write(ppd)
+		f_ppd.close()
 
 with open('/etc/cups/printers.conf', 'w') as f:
 	f.writelines(pr)
