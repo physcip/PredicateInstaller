@@ -80,6 +80,7 @@ with open('/etc/cups/printers.conf') as f:
 	pr = f.readlines()
 	
 for printer in printers:
+	ppd_path = os.path.join('/etc/cups/ppd', printer['name'] + '.ppd')
 	if 'remote' in printer and printer['remote'] == True:
 		section = False
 		for i,line in enumerate(pr):
@@ -91,9 +92,17 @@ for printer in printers:
 			# set CUPS_PRINTER_REMOTE in Type
 			if section and line.startswith('Type '):
 				pr[i] = 'Type %d\n' % (int(line[5:-1]) | 2)
+		
+		# process the job on the server instead of on the client
+		f_ppd = open(ppd_path, 'a')
+		f_ppd.write('\n\n')
+		for mimetype in ["application/pdf", "image/*", "application/postscript", "application/vnd.cups-postscript", "application/vnd.cups-command"]:
+			f_ppd.write('*cupsFilter: "%s 0 -"\n' % mimetype)
+		f_ppd.close()
+		
 	if 'editppd' in printer:
 		import re
-		f_ppd = open(os.path.join('/etc/cups/ppd', printer['name'] + '.ppd'), 'r+')
+		f_ppd = open(ppd_path, 'r+')
 		ppd = f_ppd.read()
 		for o,n in printer['editppd'].iteritems():
 			ppd = re.sub(o,n, ppd)

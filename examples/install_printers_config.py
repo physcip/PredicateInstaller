@@ -34,6 +34,7 @@ printers.append({
 		'KMPunchUnit' : 'PK519-EU4',
 		'SelectColor' : 'Grayscale',
 		'Duplex' : 'DuplexNoTumble',
+		'PageSize' : 'A4',
 		'SelectColor-default' : 'Grayscale',
 		'Duplex-default' : 'DuplexNoTumble',
 	},
@@ -44,14 +45,6 @@ printers.append({
 	'remote' : True,
     'download' : 'https://robert.physcip.uni-stuttgart.de:631/printers/nymeria_physcip_uni_stuttgart_de.ppd',
 })
-
-# Insert a passthrough filter to change the MIME type to application/postscript. That way, the remote CUPS server runs the job through pstops again and counts the pages.
-printers[-1]['editppd'][r'(\\*APPrinterIconPath: .*)'] = r'\1\n*cupsFilter2: "application/vnd.cups-postscript application/postscript 0 passthru"'
-filter = '/usr/libexec/cups/filter/passthru'
-pt = open(filter, 'w')
-pt.write('#!/bin/bash\n\n/bin/cat -')
-pt.close()
-os.chmod(filter, 0755)
 
 # if darwin == 10:
 #     printers[-1]['download'] = 'https://o.cses.konicaminolta.com/file/Default.aspx?FilePath=DL/201307/25042126/BHC554ePSMacOS106_302MU.dmg'
