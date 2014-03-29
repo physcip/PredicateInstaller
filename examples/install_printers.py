@@ -96,7 +96,7 @@ for printer in printers:
 		f_ppd = open(os.path.join('/etc/cups/ppd', printer['name'] + '.ppd'), 'r+')
 		ppd = f_ppd.read()
 		for o,n in printer['editppd'].iteritems():
-			newppd = re.sub(o,n, ppd)
+			ppd = re.sub(o,n, ppd)
 		f_ppd.seek(0)
 		f_ppd.write(ppd)
 		f_ppd.close()
