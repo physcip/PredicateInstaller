@@ -44,6 +44,7 @@ printers.append({
 	},
 	'remote' : True,
     'download' : 'https://robert.physcip.uni-stuttgart.de:631/printers/nymeria_physcip_uni_stuttgart_de.ppd',
+	'download_icon' : 'https://robert.physcip.uni-stuttgart.de:631/icons/nymeria_physcip_uni_stuttgart_de.png',
 })
 
 # if darwin == 10:

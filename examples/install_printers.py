@@ -2,6 +2,7 @@
 
 import subprocess
 import os
+import re
 from install_printers_config import printers
 
 predicate_installer = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'predicate_installer.py') # in this directory
@@ -49,6 +50,14 @@ for printer in printers:
 			printer['ppd'] = os.path.join('/usr/share/cups/model', os.path.basename(printer['download']))
 			print "Downloading %s" % os.path.basename(printer['ppd'])
 			subprocess.check_call(['/usr/bin/curl', '-L', '-o', printer['ppd'], printer['download']])
+			if 'download_icon' in printer:
+				# extract the icon path from the PPD
+				icon_path = subprocess.check_output(['/usr/bin/grep', '^*APPrinterIconPath: ', printer['ppd']])
+				icon_path = re.sub('\*APPrinterIconPath: "(.*?)"\n', r'\1', icon_path)
+				print "Downloading %s to %s" % (os.path.basename(printer['download_icon']), icon_path)
+				subprocess.check_call(['/usr/bin/curl', '-L', '-o', icon_path, printer['download_icon']])
+				print "Converting to ICNS"
+				subprocess.check_call(['/usr/bin/sips', '-s', 'format', 'icns', icon_path, '--out', icon_path])
 		if not os.path.exists(printer['ppd']):
 			raise Exception('PPD not found')
 		if printer['ppd'].startswith('/usr/share/cups/model'):
