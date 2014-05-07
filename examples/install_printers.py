@@ -80,6 +80,7 @@ with open('/etc/cups/printers.conf') as f:
 	pr = f.readlines()
 	
 for printer in printers:
+	cache_dirty = False
 	ppd_path = os.path.join('/etc/cups/ppd', printer['name'] + '.ppd')
 	if 'remote' in printer and printer['remote'] == True:
 		section = False
@@ -99,6 +100,7 @@ for printer in printers:
 		for mimetype in ["application/pdf", "image/*", "application/postscript", "application/vnd.cups-postscript", "application/vnd.cups-command"]:
 			f_ppd.write('*cupsFilter: "%s 0 -"\n' % mimetype)
 		f_ppd.close()
+		cache_dirty = True
 		
 	if 'editppd' in printer:
 		import re
@@ -109,6 +111,10 @@ for printer in printers:
 		f_ppd.seek(0)
 		f_ppd.write(ppd)
 		f_ppd.close()
+		cache_dirty = True
+	
+	if cache_dirty: # need to delete the PPD cache. OS X 10.8 appears to have done that automatically, but 10.9 keeps using the old cupsFilter list if we don't do this
+		os.unlink('/var/spool/cups/cache/' + printer['name'] + '.data')
 
 with open('/etc/cups/printers.conf', 'w') as f:
 	f.writelines(pr)
