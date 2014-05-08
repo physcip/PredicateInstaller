@@ -14,6 +14,7 @@ subprocess.call(['/bin/launchctl', 'unload', '/System/Library/LaunchDaemons/org.
 subprocess.call(['/bin/launchctl', 'load', '/System/Library/LaunchDaemons/org.cups.cupsd.plist'])
 subprocess.check_call(['/bin/launchctl', 'start', 'org.cups.cupsd'])
 
+errors = 0
 for printer in printers:
 	try:
 		if 'ppd' in printer and not os.path.exists(printer['ppd']) and 'predicate' in printer:
@@ -54,6 +55,9 @@ for printer in printers:
 				# extract the icon path from the PPD
 				icon_path = subprocess.check_output(['/usr/bin/grep', '^*APPrinterIconPath: ', printer['ppd']])
 				icon_path = re.sub('\*APPrinterIconPath: "(.*?)"\n', r'\1', icon_path)
+				icon_dir = os.path.dirname(icon_path)
+				if not os.path.exists(icon_dir):
+					os.makedirs(icon_dir)
 				print "Downloading %s to %s" % (os.path.basename(printer['download_icon']), icon_path)
 				subprocess.check_call(['/usr/bin/curl', '-L', '-o', icon_path, printer['download_icon']])
 				print "Converting to ICNS"
@@ -83,6 +87,7 @@ for printer in printers:
 		
 	except Exception as e:
 		print "Could not add printer %s: %s" % (printer['name'], e)
+		errors += 1
 
 subprocess.check_call(['/bin/launchctl', 'unload', '/System/Library/LaunchDaemons/org.cups.cupsd.plist'])
 with open('/etc/cups/printers.conf') as f:
@@ -128,3 +133,6 @@ for printer in printers:
 with open('/etc/cups/printers.conf', 'w') as f:
 	f.writelines(pr)
 subprocess.check_call(['/bin/launchctl', 'load', '/System/Library/LaunchDaemons/org.cups.cupsd.plist'])
+
+if errors != 0:
+	sys.exit(1)
