@@ -4,13 +4,21 @@ import subprocess
 import os
 import platform
 
-if int(platform.release().split('.')[0]) < 13: # Mavericks
-        raise Exception("Dictation is not available in OS X below 10.9")
+num = int(platform.release().split('.')[0])-12 # 13=>1: Mavericks
+if num <= 0:
+	raise Exception("Dictation is not available in OS X below 10.9")
+if num == 1:
+	num = ''
+else:
+	num = '_%d' % num
 
 pkgs = [
-	'"SRCLANGID:com.apple.speech.SpeechRecognitionCoreLangauge.en_US" IN tags',
-	'"SRCLANGID:com.apple.speech.SpeechRecognitionCoreLangauge.de_DE" IN tags'
+	'"SRCLANGID:com.apple.speech.SpeechRecognitionCoreLanguage.en_US%s" IN tags' % num,
+	'"SRCLANGID:com.apple.speech.SpeechRecognitionCoreLanguage.de_DE%s" IN tags' % num
 ]
+if num == 1: # fix a typo in Mavericks
+	for i in range(len(pkgs)):
+		pkgs[i] = pkgs[i].replace('Language','Langauge')
 
 for pkg in pkgs:
 	subprocess.call(['/usr/bin/python', os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'predicate_installer.py'), pkg])

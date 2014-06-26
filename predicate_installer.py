@@ -56,7 +56,7 @@ if int(platform.release().split('.')[0]) >= 13: # OS X 10.9 and higher
 	
 	controller = SUSoftwareUpdateController.alloc().initWithDelegate_localizedProductName_(ControllerDelegate, "SU Predicate")
 	if controller.countOfCachedProductsMatchingPredicate_(predicate) == 0:
-		raise Exception("No products found")
+		raise Exception("No products found for %s" % sys.argv[1])
 	
 	md = controller.metadataOfCachedProductsMatchingPredicate_(predicate)
 	#print md
@@ -105,7 +105,7 @@ if scan.error() is not None:
 	raise Exception("Scan failed: %s" % scan.error())
 products = scan.installableProducts()
 if len(products) < 1:
-	raise Exception("No products found")
+	raise Exception("No products found for %s" % sys.argv[1])
 
 for product in products:
 	 print "Installing", product.displayName().encode("ascii", "replace"), product.displayVersion(), product.productKey(), ", ".join(product.packageIdentifiersToInstall())
