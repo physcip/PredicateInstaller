@@ -35,8 +35,8 @@ printers.append({
 		'SelectColor' : 'Grayscale',
 		'Duplex' : 'DuplexNoTumble',
 		'PageSize' : 'A4',
-		'SelectColor-default' : 'Grayscale',
-		'Duplex-default' : 'DuplexNoTumble',
+#		'SelectColor-default' : 'Grayscale',
+#		'Duplex-default' : 'DuplexNoTumble',
 	},
 	'editppd' : {
 #		'^\*DefaultKMDuplex: .*$' : '*DefaultKMDuplex: Double',
