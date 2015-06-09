@@ -15,3 +15,5 @@ open('/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress','a').clos
 
 for pkg in pkgs:
 	subprocess.call(['/usr/bin/python', os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'predicate_installer.py'), pkg])
+
+os.unlink('/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress')

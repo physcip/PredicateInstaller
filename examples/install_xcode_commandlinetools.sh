@@ -14,5 +14,8 @@ touch /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress
 pkgname=$(softwareupdate --list | grep -A 1 '*' | grep -B 1 'Command Line' | head -n 1 | awk '{print $2}')
 
 softwareupdate --install $pkgname
+result=$?
 
-exit $?
+rm /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress
+
+exit $result

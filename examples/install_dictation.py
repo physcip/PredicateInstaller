@@ -5,6 +5,8 @@ import os
 import platform
 
 num = int(platform.release().split('.')[0])-12 # 13=>1: Mavericks
+if num >= 3:
+	num -= 1
 if num <= 0:
 	raise Exception("Dictation is not available in OS X below 10.9")
 if num == 1:
