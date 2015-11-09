@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import subprocess
+import sys
 import os
 import re
 from install_printers_config import printers
@@ -16,6 +17,7 @@ subprocess.check_call(['/bin/launchctl', 'start', 'org.cups.cupsd'])
 
 errors = 0
 for printer in printers:
+	lpadminflag = '-m'
 	try:
 		if 'ppd' in printer and not os.path.exists(printer['ppd']) and 'predicate' in printer:
 			# mark printer as connected
@@ -48,7 +50,8 @@ for printer in printers:
 				subprocess.check_call(['/usr/sbin/installer', '-package', pkgpath, '-target', '/'])
 				subprocess.check_call(['/usr/bin/hdiutil', 'detach', mountpoint])
 		elif 'ppd' not in printer and 'download' in printer and printer['download'].endswith('.ppd'):
-			printer['ppd'] = os.path.join('/usr/share/cups/model', os.path.basename(printer['download']))
+			lpadminflag = '-P'
+			printer['ppd'] = os.path.join('/Library/Printers/PPDs', os.path.basename(printer['download']))
 			print "Downloading %s" % os.path.basename(printer['ppd'])
 			subprocess.check_call(['/usr/bin/curl', '-L', '-o', printer['ppd'], printer['download']])
 			if 'download_icon' in printer:
@@ -74,7 +77,7 @@ for printer in printers:
 		DEVNULL.close()
 		
 		# add print queue
-		subprocess.check_call(['/usr/sbin/lpadmin', '-p', printer['name'], '-v', printer['uri'], '-m', printer['ppd'], '-L', printer['location'], '-E', '-o', 'printer-is-shared=false'])
+		subprocess.check_call(['/usr/sbin/lpadmin', '-p', printer['name'], '-v', printer['uri'], lpadminflag, printer['ppd'], '-L', printer['location'], '-E', '-o', 'printer-is-shared=false'])
 		
 		# set printer options
 		if 'options' in printer and len(printer['options']) > 0:
@@ -127,8 +130,9 @@ for printer in printers:
 		f_ppd.close()
 		cache_dirty = True
 	
-	if cache_dirty: # need to delete the PPD cache. OS X 10.8 appears to have done that automatically, but 10.9 keeps using the old cupsFilter list if we don't do this
-		os.unlink('/var/spool/cups/cache/' + printer['name'] + '.data')
+	ppdcache = '/var/spool/cups/cache/' + printer['name'] + '.data'
+	if cache_dirty and os.path.exists(ppdcache): # need to delete the PPD cache. OS X 10.8 appears to have done that automatically, but 10.9 keeps using the old cupsFilter list if we don't do this
+		os.unlink(ppdcache)
 
 with open('/etc/cups/printers.conf', 'w') as f:
 	f.writelines(pr)
