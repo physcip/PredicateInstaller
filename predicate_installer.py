@@ -6,8 +6,14 @@ import time
 import os
 import sys
 import platform
+import subprocess
 from threading import Thread
 from PyObjCTools import AppHelper
+
+metaFile = "/Library/Updates/ProductMetadata.plist"
+
+if (not os.path.isfile(metaFile) or os.path.getsize(metaFile) < 2**10): #1KB
+	subprocess.check_call(['/usr/sbin/softwareupdate', "--list"])
 
 finishedInstall = False
 
