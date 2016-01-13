@@ -9,6 +9,9 @@ import platform
 from threading import Thread
 from PyObjCTools import AppHelper
 
+if (not os.path.isfile(metaFile) or os.path.getsize(metaFile) < 2**20): #1KB
+	subprocess.check_call(['/usr/sbin/softwareupdate', "--list"])
+
 finishedInstall = False
 
 def installlog():
