@@ -6,6 +6,7 @@ import time
 import os
 import sys
 import platform
+import subprocess
 from threading import Thread
 from PyObjCTools import AppHelper
 
