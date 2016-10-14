@@ -6,6 +6,8 @@ import platform
 
 if int(platform.release().split('.')[0]) < 13: # Mavericks
         raise Exception("On-demand Xcode Command Line Tools are not available in OS X below 10.9")
+if int(platform.release().split('.')[0]) > 15: # Sierra
+        raise Exception("On-demand Xcode Command Line Tools are not available in OS X above 10.11")
 
 pkgs = [
 	'"DTCommandLineTools" IN tags'
