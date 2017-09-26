@@ -5,6 +5,8 @@ import os
 import platform
 
 num = int(platform.release().split('.')[0])-10 # 13=>3: Mavericks, 12=>2: Mountain Lion, 11=>1: Lion
+if num >= 7:
+	num -= 1
 if num <= 0:
 	raise Exception("Voices are not available in OS X below 10.7")
 if num == 1:

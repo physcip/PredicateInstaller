@@ -19,8 +19,7 @@ In Mac OS X 10.6 Snow Leopard, the command line equivalent /usr/sbin/softwareupd
 
 In Mac OS X 10.8 Mountain Lion however, that flag no longer exists. This script is supposed to fill that void.
 
-I have tested this script on Mac OS X 10.8.3 Mountain Lion; it likely works on anything upwards from Mac OS X 10.7 Lion.
-I did also test it on Mac OS X 10.6 and after working around a tiny difference in the API, it appears to mostly work fine.
+I have tested this script on Mac OS X 10.6.8 through macOS 10.13.
 
 ## Example
 

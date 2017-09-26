@@ -5,10 +5,10 @@ import os
 import platform
 
 num = int(platform.release().split('.')[0])-12 # 13=>1: Mavericks
-if num == 3:
-	num -= 1
-if num >= 4:
-	num -= 2
+if num == 3 or num == 4:
+	num = 2
+elif num >= 5:
+	num -= 3
 if num <= 0:
 	raise Exception("Dictation is not available in OS X below 10.9")
 if num == 1:
