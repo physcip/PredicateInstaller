@@ -8,7 +8,7 @@ printers = []
 printers.append({
 	'predicate' : '("printing software" IN tags OR "printer update" IN tags) AND "MANUFACTURER:HP;MODEL:Color LaserJet CP4020-CP4520" IN tags',
 	'model' : "MANUFACTURER:HP;MODEL:Color LaserJet CP4020-CP4520",
-	'uri' : 'ipp://robert.physcip.uni-stuttgart.de:631/printers/ghost_physcip_uni_stuttgart_de',
+	'uri' : 'ipp://cups.physcip.uni-stuttgart.de:631/printers/ghost',
 	'ppd' : '/Library/Printers/PPDs/Contents/Resources/HP Color LaserJet CP4020 CP4520 Series.gz',
 	'name' : 'ghost',
 	'location': 'CIP Pool Physik',
@@ -25,26 +25,20 @@ printers.append({
 })
 
 printers.append({
-	'uri' : 'ipp://robert.physcip.uni-stuttgart.de:631/printers/nymeria_physcip_uni_stuttgart_de',
+	'uri' : 'ipp://cups.physcip.uni-stuttgart.de:631/printers/nymeria',
 	'name' : 'nymeria',
 	'location': 'CIP Pool Physik',
 	'options' : {
-		'PaperSources' : 'PC410',
+		'PaperSources' : 'PC416',
 		'Finisher' : 'FS533',
-		'KMPunchUnit' : 'PK519-EU4',
+		'KOPunch' : 'PK519-4',
 		'SelectColor' : 'Grayscale',
-		'Duplex' : 'DuplexNoTumble',
+		'KMDuplex' : '2Sided',
 		'PageSize' : 'A4',
-#		'SelectColor-default' : 'Grayscale',
-#		'Duplex-default' : 'DuplexNoTumble',
-	},
-	'editppd' : {
-#		'^\*DefaultKMDuplex: .*$' : '*DefaultKMDuplex: Double',
-#		'^\*DefaultSelectColor: .*$' : '*DefaultSelectColor: Grayscale',
 	},
 	'remote' : True,
-    'download' : 'https://robert.physcip.uni-stuttgart.de:631/printers/nymeria_physcip_uni_stuttgart_de.ppd',
-	'download_icon' : 'https://robert.physcip.uni-stuttgart.de:631/icons/nymeria_physcip_uni_stuttgart_de.png',
+	'download' : 'http://cups.physcip.uni-stuttgart.de:631/printers/nymeria.ppd',
+	'download_icon' : 'http://cups.physcip.uni-stuttgart.de:631/icons/nymeria.png',
 })
 
 # if darwin == 10:
